@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold:   #f59e0b;
+  --orange: #fb8500;
+  --navy:   #023047;
+  --bg:     #f8f9fa;
+  --text:   #0f172a;
+  --muted:  #6b7280;
+  --border: rgba(0,0,0,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ── CROSSHAIR CURSOR ── */
+#cursor-dot {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.06s linear, background 0.2s;
+}
+
+#cursor-custom {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  width: 32px; height: 32px;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.2s;
+}
+
+#cursor-custom::before,
+#cursor-custom::after {
+  content: '';
+  position: absolute;
+  background: var(--gold);
+  border-radius: 1px;
+  opacity: 0.75;
+  transition: background 0.2s, opacity 0.2s, transform 0.2s;
+}
+
+/* Horizontal line */
+#cursor-custom::before {
+  width: 32px; height: 1px;
+  top: 50%; left: 0;
+  transform: translateY(-50%);
+}
+
+/* Vertical line */
+#cursor-custom::after {
+  width: 1px; height: 32px;
+  left: 50%; top: 0;
+  transform: translateX(-50%);
+}
+
+/* Gap in center */
+#cursor-custom .gap-h,
+#cursor-custom .gap-v {
+  position: absolute;
+  background: var(--bg);
+  z-index: 1;
+}
+
+#cursor-custom.hovered {
+  width: 44px; height: 44px;
+}
+
+#cursor-custom.hovered::before {
+  width: 44px;
+  background: var(--orange);
+  opacity: 1;
+}
+
+#cursor-custom.hovered::after {
+  height: 44px;
+  background: var(--orange);
+  opacity: 1;
+}
+
+/* ── Utility clip-path buttons ── */
+.btn-clip {
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+}
+.btn-clip-sm {
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+/* ── Animated grid BG (light) ── */
+.animated-grid {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(48px); }
+}
+
+/* ── Stat counter ── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.stat-appear { animation: countUp 0.6s ease forwards; }
+
+/* ── Card image bg ── */
+.card-img-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0.08;
+  transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+  filter: saturate(0.5);
+}
+.market-card:hover .card-img-bg { opacity: 0.18; transform: scale(1.05); }
+
+/* ── Hover tooltip ── */
+.hover-tip {
+  position: absolute;
+  top: 24px; right: 24px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.72rem;
+  color: var(--gold);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.94);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  backdrop-filter: blur(12px);
+  z-index: 30;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.market-card:hover .hover-tip { opacity: 1; transform: translateY(0) scale(1); }
+
+/* ── Chart animated line ── */
+@keyframes drawLine {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0; }
+}
+.chart-line {
+  stroke-dasharray: 1000;
+  animation: drawLine 2s ease forwards;
+}
+
+/* ── Pulse glow ── */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(245,158,11,0); }
+}
+.pulse-glow { animation: pulseGlow 2s infinite; }
